@@ -35,7 +35,26 @@ namespace Lyricify.Lyrics.Searchers.Helpers
             name1 = NormalizeName(name1);
             name2 = NormalizeName(name2);
 
-            if (name1 == name2) return NameMatchType.Perfect;
+            static bool MaskedNameEquals(string first, string second)
+            {
+                if (first.Length != second.Length) return false;
+
+                static bool IsMask(char character) => character is '*' or '＊';
+
+                for (int i = 0; i < first.Length; i++)
+                {
+                    if (first[i] == second[i]) continue;
+
+                    if (IsMask(first[i]) && (char.IsLetterOrDigit(second[i]) || IsMask(second[i]))) continue;
+                    if (IsMask(second[i]) && char.IsLetterOrDigit(first[i])) continue;
+
+                    return false;
+                }
+
+                return true;
+            }
+
+            if (name1 == name2 || MaskedNameEquals(name1, name2)) return NameMatchType.Perfect;
 
             name1 = name1.Replace("acoustic version", "acoustic");
             name2 = name2.Replace("acoustic version", "acoustic");
