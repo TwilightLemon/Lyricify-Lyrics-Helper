@@ -271,6 +271,15 @@ namespace Lyricify.Lyrics.Providers.Web.QQMusic
                     { "musicid", id },
                 });
 
+            return ParseLyricsResponse(resp);
+        }
+
+        /// <summary>
+        /// Parses the lyric download response, including original, translated,
+        /// and romanized lyrics. Supports both encrypted and plaintext payloads.
+        /// </summary>
+        public static QqLyricsResponse? ParseLyricsResponse(string resp)
+        {
             resp = resp.Replace("<!--", "").Replace("-->", "");
 
             var dict = new Dictionary<string, XmlNode>();
@@ -280,7 +289,8 @@ namespace Lyricify.Lyrics.Providers.Web.QQMusic
             var result = new QqLyricsResponse
             {
                 Lyrics = "",
-                Trans = ""
+                Trans = "",
+                Romaji = ""
             };
 
             foreach (var pair in dict)
@@ -299,7 +309,8 @@ namespace Lyricify.Lyrics.Providers.Web.QQMusic
                 }
                 catch (FormatException)
                 {
-                    if (Helpers.TypeHelper.IsLyricsType(text, Models.LyricsTypes.Lrc))
+                    if (Helpers.TypeHelper.IsLyricsType(text, Models.LyricsTypes.Lrc)
+                        || Helpers.TypeHelper.IsLyricsType(text, Models.LyricsTypes.Qrc))
                     {
                         decompressText = text ?? "";
                     }
@@ -342,11 +353,16 @@ namespace Lyricify.Lyrics.Providers.Web.QQMusic
                         case "ts":
                             result.Trans = s;
                             break;
+                        case "roma":
+                            result.Romaji = s;
+                            break;
                     }
                 }
             }
 
-            if (result.Lyrics == "" && result.Trans == "")
+            if (string.IsNullOrWhiteSpace(result.Lyrics)
+                && string.IsNullOrWhiteSpace(result.Trans)
+                && string.IsNullOrWhiteSpace(result.Romaji))
             {
                 return null;
             }
