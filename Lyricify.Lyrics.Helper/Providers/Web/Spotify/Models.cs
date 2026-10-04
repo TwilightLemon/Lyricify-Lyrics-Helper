@@ -40,6 +40,21 @@ namespace Lyricify.Lyrics.Providers.Web.Spotify
 
         [JsonProperty("artists")]
         public List<SearchArtistItem> Artists { get; set; }
+
+        [JsonProperty("images")]
+        public List<SearchImageItem> Images { get; set; }
+    }
+
+    public class SearchImageItem
+    {
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+        [JsonProperty("width")]
+        public int? Width { get; set; }
+
+        [JsonProperty("height")]
+        public int? Height { get; set; }
     }
 
     public class SearchArtistItem
@@ -59,5 +74,7 @@ namespace Lyricify.Lyrics.Providers.Web.Spotify
         public string AlbumName { get; set; }
 
         public int? DurationMs { get; set; }
+
+        public string ArtworkUrl { get; set; }
     }
 }

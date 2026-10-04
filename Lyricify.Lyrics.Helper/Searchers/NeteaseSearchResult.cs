@@ -25,13 +25,17 @@ namespace Lyricify.Lyrics.Searchers
             (int)song.Duration,
             song.Id
             )
-        { }
+        {
+            ArtworkUrl = ArtworkHelper.NormalizeUrl(song.Album?.PicUrl);
+        }
 
         public string Title { get; }
 
         public string[] Artists { get; }
 
         public string Album { get; }
+
+        public string? ArtworkUrl { get; set; }
 
         public string Id { get; }
 

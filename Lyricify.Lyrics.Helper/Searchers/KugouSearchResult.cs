@@ -33,6 +33,8 @@ namespace Lyricify.Lyrics.Searchers
 
         public string Album { get; }
 
+        public string? ArtworkUrl { get; set; }
+
         public string Hash { get; }
 
         public string[]? AlbumArtists { get; }

@@ -33,6 +33,11 @@ namespace Lyricify.Lyrics.Searchers
         public string Album { get; }
 
         /// <summary>
+        /// 专辑封面地址；歌词来源或未提供封面的搜索结果可为空。
+        /// </summary>
+        public string? ArtworkUrl => null;
+
+        /// <summary>
         /// 专辑艺人列表
         /// </summary>
         public string[]? AlbumArtists { get; }

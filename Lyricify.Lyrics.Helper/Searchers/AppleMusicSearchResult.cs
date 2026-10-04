@@ -27,7 +27,12 @@ namespace Lyricify.Lyrics.Searchers
              song.Attributes?.DurationInMillis ?? 0,
              song.Id ?? string.Empty
         )
-        { }
+        {
+            var artwork = song.Attributes?.Artwork;
+            ArtworkUrl = ArtworkHelper.WithSize(artwork?.Url,
+                artwork?.Width is > 0 ? Math.Min(600, artwork.Width) : 600,
+                artwork?.Height is > 0 ? Math.Min(600, artwork.Height) : 600);
+        }
 
         private static string[] SplitArtists(string artistName)
         {
@@ -65,6 +70,8 @@ namespace Lyricify.Lyrics.Searchers
         public string[] Artists { get; }
 
         public string Album { get; }
+
+        public string? ArtworkUrl { get; set; }
 
         public string Id { get; }
 

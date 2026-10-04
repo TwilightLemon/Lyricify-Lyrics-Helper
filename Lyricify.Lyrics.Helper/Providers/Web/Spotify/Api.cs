@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Lyricify.Lyrics.Searchers.Helpers;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -226,6 +227,8 @@ namespace Lyricify.Lyrics.Providers.Web.Spotify
                 ArtistName = string.Join(", ", t.Artists?.Select(a => a.Name).Where(a => !string.IsNullOrWhiteSpace(a)) ?? Enumerable.Empty<string>()),
                 AlbumName = t.Album?.Name ?? string.Empty,
                 DurationMs = t.DurationMs,
+                ArtworkUrl = ArtworkHelper.FirstUrl(t.Album?.Images?
+                    .OrderByDescending(image => image.Width ?? 0).Select(image => image.Url)),
             }).Where(t => !string.IsNullOrWhiteSpace(t.Id) && !string.IsNullOrWhiteSpace(t.Title)).ToList()
                 ?? new List<SpotifyTrackCandidate>();
         }
@@ -295,6 +298,11 @@ namespace Lyricify.Lyrics.Providers.Web.Spotify
                 Title = title,
                 ArtistName = string.Join(", ", artistNames),
                 AlbumName = albumName,
+                ArtworkUrl = ArtworkHelper.FirstUrl(
+                    (dataNode.SelectToken("albumOfTrack.coverArt.sources") as JArray
+                     ?? dataNode.SelectToken("album.images") as JArray)?
+                    .OrderByDescending(image => image.Value<int?>("width") ?? 0)
+                    .Select(image => image.Value<string>("url"))),
             };
         }
 

@@ -25,13 +25,17 @@ namespace Lyricify.Lyrics.Searchers
             (int)Track.Entity.Track.Duration,
             Track.Entity.Track.Id
             )
-        { }
+        {
+            ArtworkUrl = ArtworkHelper.FirstUrl(Track.Entity.Track.Album?.UrlCover?.Urls);
+        }
 
         public string Title { get; }
 
         public string[] Artists { get; }
 
         public string Album { get; }
+
+        public string? ArtworkUrl { get; set; }
 
         public string Id { get; }
 

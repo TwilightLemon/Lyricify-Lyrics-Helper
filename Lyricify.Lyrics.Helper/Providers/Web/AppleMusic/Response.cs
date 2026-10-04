@@ -66,6 +66,21 @@ namespace Lyricify.Lyrics.Providers.Web.AppleMusic
 
         [JsonProperty("durationInMillis")]
         public int DurationInMillis { get; set; }
+
+        [JsonProperty("artwork")]
+        public Artwork Artwork { get; set; }
+    }
+
+    public class Artwork
+    {
+        [JsonProperty("url")]
+        public string Url { get; set; }
+
+        [JsonProperty("width")]
+        public int Width { get; set; }
+
+        [JsonProperty("height")]
+        public int Height { get; set; }
     }
 
     public class LyricResponse

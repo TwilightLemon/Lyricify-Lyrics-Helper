@@ -26,6 +26,8 @@ namespace Lyricify.Lyrics.Searchers
             track.DurationMs,
             track.Id ?? string.Empty)
         {
+            ArtworkUrl = ArtworkHelper.FirstUrl(track.Album?.Images?
+                .OrderByDescending(image => image.Width ?? 0).Select(image => image.Url));
         }
 
         public SpotifySearchResult(SpotifyTrackCandidate track) : this(
@@ -36,6 +38,7 @@ namespace Lyricify.Lyrics.Searchers
             track.DurationMs ?? 0,
             track.Id ?? string.Empty)
         {
+            ArtworkUrl = ArtworkHelper.NormalizeUrl(track.ArtworkUrl);
         }
 
         public string Title { get; }
@@ -43,6 +46,8 @@ namespace Lyricify.Lyrics.Searchers
         public string[] Artists { get; }
 
         public string Album { get; }
+
+        public string? ArtworkUrl { get; set; }
 
         public string Id { get; }
 

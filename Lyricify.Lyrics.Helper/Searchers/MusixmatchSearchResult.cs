@@ -29,13 +29,21 @@ namespace Lyricify.Lyrics.Searchers
             track.TrackIsrc,
             track.CommontrackVanityId
             )
-        { }
+        {
+            ArtworkUrl = ArtworkHelper.FirstUrl(new[]
+            {
+                track.AlbumCoverart800x800, track.AlbumCoverart500x500,
+                track.AlbumCoverart350x350, track.AlbumCoverart100x100
+            });
+        }
 
         public string Title { get; }
 
         public string[] Artists { get; }
 
         public string Album { get; }
+
+        public string? ArtworkUrl { get; set; }
 
         public int Id { get; }
 

@@ -27,13 +27,19 @@ namespace Lyricify.Lyrics.Searchers
             song.Id,
             song.Mid
             )
-        { }
+        {
+            ArtworkUrl = string.IsNullOrWhiteSpace(song.Album?.Mid)
+                ? null
+                : $"https://y.gtimg.cn/music/photo_new/T002R500x500M000{Uri.EscapeDataString(song.Album!.Mid)}.jpg";
+        }
 
         public string Title { get; }
 
         public string[] Artists { get; }
 
         public string Album { get; }
+
+        public string? ArtworkUrl { get; set; }
 
         public string Id { get; }
 
